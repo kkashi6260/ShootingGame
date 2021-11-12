@@ -7,6 +7,7 @@ public class PlayerHP : MonoBehaviour
     private float    maxHP = 10;
     private float currentHP;
     private SpriteRenderer spriteRenderer;
+    private PlayerController playerController;
 
     public float MaxHP => maxHP;
     public float CurrentHp => currentHP;
@@ -15,6 +16,7 @@ public class PlayerHP : MonoBehaviour
     {
         currentHP = maxHP;
         spriteRenderer = GetComponent<SpriteRenderer>();
+        playerController = GetComponent<PlayerController>();
     }
     public void TakeDamage(float damage)
     {
@@ -22,8 +24,9 @@ public class PlayerHP : MonoBehaviour
         StopCoroutine("HitColorAnimation");
         StartCoroutine("HitColorAnimation");
 
-        if ( currentHP <= 0) {
-            Debug.Log("Player HP: 0.. Die");
+        if ( currentHP <= 0)
+        {
+            playerController.OnDie();
         }
     }
 
