@@ -10,6 +10,12 @@ public class Weapon : MonoBehaviour
     private int         attackLevel = 1;
     private AudioSource audioSource;
 
+    [SerializeField]
+    private GameObject  boomPrefabs;
+    private int         boomCount = 3;
+
+    public int BoomCount => boomCount;
+
     private void Awake()
     {
         audioSource = GetComponent<AudioSource>();
@@ -21,6 +27,14 @@ public class Weapon : MonoBehaviour
     public void StopFiring()
     {
         StopCoroutine("TryAttack");
+    }
+    public void StartBoom()
+    {
+        if(boomCount > 0)
+        {
+            boomCount--;
+            Instantiate(boomPrefabs, transform.position, Quaternion.identity);
+        }
     }
     private IEnumerator TryAttack()
     {
