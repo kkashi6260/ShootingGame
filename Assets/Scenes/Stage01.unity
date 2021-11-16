@@ -1085,6 +1085,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   projectilePrefab: {fileID: 3468217598182683726, guid: 07235c363f1a11e4d8e0866ea18f89ad, type: 3}
   attackRate: 0.15
+  maxAttackLevel: 3
   boomPrefabs: {fileID: 7442931733740854230, guid: 675278099b785484094b67e84571d23b, type: 3}
 --- !u!50 &1177487587
 Rigidbody2D:

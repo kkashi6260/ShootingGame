@@ -10,8 +10,12 @@ public class PlayerHP : MonoBehaviour
     private PlayerController playerController;
 
     public float MaxHP => maxHP;
-    public float CurrentHp => currentHP;
-
+    public float CurrentHp
+    {
+        set => currentHP = Mathf.Clamp(value, 0, maxHP);
+        get => currentHP;
+    }
+     
     private void Awake()
     {
         currentHP = maxHP;
