@@ -4,12 +4,14 @@ using UnityEngine;
 public class PlayerBoom : MonoBehaviour
 {
     [SerializeField]
-    private AnimationCurve curve;
+    private AnimationCurve  curve;
     [SerializeField]
-    private AudioClip   boomAudio;
-    private float       boomDelay = 0.5f;
-    private Animator    animator;
-    private AudioSource audioSource;
+    private AudioClip       boomAudio;
+    [SerializeField]
+    private int             damage = 100;
+    private float           boomDelay = 0.5f;
+    private Animator        animator;
+    private AudioSource     audioSource;
 
     private void Awake()
     {
@@ -53,6 +55,16 @@ public class PlayerBoom : MonoBehaviour
         for (int i = 0; i < meteorites.Length; i++)
         {
             meteorites[i].GetComponent<Meteorite>().OnDie();
+        }
+        GameObject[] projectils = GameObject.FindGameObjectsWithTag("EnemyProjectile");
+        for (int i = 0; i < projectils.Length; ++ i)
+        {
+            projectils[i].GetComponent<EnemyProjectile>().Ondie();
+        }
+        GameObject boss = GameObject.FindGameObjectWithTag("Boss");
+        if (boss != null)
+        {
+            boss.GetComponent<BossHP>().TakeDamage(damage);
         }
 
         Destroy(gameObject);

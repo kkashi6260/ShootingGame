@@ -12,14 +12,28 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField]
     private Transform      canvasTransform;
     [SerializeField]
+    private BGMController  bgmController;
+    [SerializeField]
+    private GameObject     textBossWarning;
+    [SerializeField]
+    private GameObject     panelBossHP;
+    [SerializeField]
+    private GameObject     boss;
+    [SerializeField]
     private float          spawnTime;
+    [SerializeField]
+    private int            maxEnemyCount = 100;
 
     private void Awake()
     {
+        textBossWarning.SetActive(false);
+        panelBossHP.SetActive(false);
+        boss.SetActive(false);
         StartCoroutine("SpawnEnemy");
     }
     private IEnumerator SpawnEnemy()
     {
+        int currentEnemyCount = 0;
         while (true)
         {
             //x 위치는 스테이지의 크기 범위 내에서 임의의 값을 선택
@@ -30,6 +44,13 @@ public class EnemySpawner : MonoBehaviour
             GameObject enemyClone = Instantiate(enemyPrefab, positon, Quaternion.identity);
             // 적 체력을 나타내는 Slider UI 생성 및 설정
             SpawnEnemyHPSlider(enemyClone);
+
+            currentEnemyCount ++;
+            if (currentEnemyCount == maxEnemyCount)
+            {
+                StartCoroutine("SpawnBoss");
+                break;
+            }
 
             // spawnTime 만큼 대기
             yield return new WaitForSeconds(spawnTime);
@@ -47,5 +68,16 @@ public class EnemySpawner : MonoBehaviour
 
         sliderClone.GetComponent<SliderPositonAutoSetter>().Setup(enemy.transform);
         sliderClone.GetComponent<EnemyHpViewer>().Setup(enemy.GetComponent<EnemyHP>());
+    }
+    private IEnumerator SpawnBoss()
+    {
+        bgmController.ChangeBGM(BGMType.Boss);
+        textBossWarning.SetActive(true);
+        yield return new WaitForSeconds(1.5f);
+
+        textBossWarning.SetActive(false);
+        panelBossHP.SetActive(true);
+        boss.SetActive(true);
+        boss.GetComponent<Boss>().ChangeState(BossState.MoveToAppearPoint);
     }
 }
